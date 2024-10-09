@@ -26,17 +26,17 @@ for x in hotel_list:
     count_rooms = 0
     i = i + 1
 
-#elimino uno strato della lista degli hotel
-second_big_hotel_list = []
-for item in big_hotel_list:
-    x = (' '.join(item))
-    second_big_hotel_list.append(x)
+#creo una funzione per trasformare una lista di liste in una lista singola
+def list_cleaner(x, y):
+    for j in x:
+        for i in j:
+            y.append(i)
 
-#elimino uno strato della lista degli ospiti
+second_big_hotel_list = []
+list_cleaner(big_hotel_list, second_big_hotel_list)
+
 second_guest_list = []
-for item in guest_list:
-    x = (' '.join(item))
-    second_guest_list.append(x)
+list_cleaner(guest_list, second_guest_list)
 
 # alcune stanze rimangono vuote
 len_check = len(big_hotel_list) == len(guest_list)

@@ -1,5 +1,4 @@
 import sys
-import random
 import pandas as pd
 
 # importo i datasets
@@ -11,38 +10,50 @@ ds_guest = pd.read_csv("C:/Users/Utente/Desktop/dse/ds py/guests.csv")
 guest_list = [[i] for i in ds_guest.guest]
 hotel_list = [[i] for i in ds_hotel.hotel]
 
-#elimino uno strato della lista degli ospiti
-second_guest_list = []
-for item in guest_list:
-    x = (' '.join(item))
-    second_guest_list.append(x)
+#creo una funzione per trasformare una lista di liste in una lista singola
+def list_cleaner(x, y):
+    for j in x:
+        for i in j:
+            y.append(i)
 
-#elimino uno strato della lista degli hotel
+second_guest_list = []
+list_cleaner(guest_list, second_guest_list)
+
 second_hotel_list = []
-for item in hotel_list:
-    x = (' '.join(item))
-    second_hotel_list.append(x)
+list_cleaner(hotel_list, second_hotel_list)
 
 #stanze disponibili per hotel
 n_rooms = pd.to_numeric(ds_hotel.rooms, errors = 'coerce')
 rooms_list = [[i] for i in n_rooms]
 number_rooms = []
 
-#miglior metodo per convertire una lista di liste in una singola lista
-for y in rooms_list:
-    for x in y:
-        number_rooms.append(x)
+list_cleaner(rooms_list, number_rooms)
 
+#dizionario con hotel e numero di stanze per ciascuno
 hotel_rooms = dict(zip(second_hotel_list, number_rooms))
-print(hotel_rooms)
-
-#come scalare dal dizionario le stanze volta per volta???
-# metti un contatore pari a 1 e verifichi che sia uguale al valore della priority, quando la priority torna a 1
-# significa che è cambiato il guest, si crea così una lista di liste con le preferenze, dove 
-# ogni elemento della lista esterna è un guest e quelli di ogni lista interna sono gli hotel di quel guest in ordine
-# di priorità
 
 
-    
+
+# setto un'indice che scorre nella lista delle preferenze dei guest
+i = 0
+#una lista interna temporanea che si cancella di volta in volta
+inner = []
+#una lista esterna che raccoglie tutte le liste interne temporanee
+outer = []
+
+#scorro nella lista dei guest
+for x in second_guest_list:
+#finchè il guest della lista è uguale a quello del dataset delle preferenze, prendo l'hotel associato
+#e lo unisco alla lista interna
+    while x == ds_pref.guest[i]:
+        inner.append(ds_pref.hotel[i])
+        i += 1
+    outer.append(inner)
+    i = 0
+    inner = []
+print(outer)
+
+#perchè funziona solo se resetto il contatore a zero e non se lo lascio libero???
+
 
 sys.exit()
