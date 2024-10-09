@@ -1,14 +1,14 @@
 import sys
-import pandas as pd
 import random
-from collections import Counter
+import pandas as pd
+
 
 ds_hotel = pd.read_csv("C:/Users/Utente/Desktop/dse/ds py/hotels.csv")
 ds_pref = pd.read_csv("C:/Users/Utente/Desktop/dse/ds py/preferences.csv")
 ds_guest = pd.read_csv("C:/Users/Utente/Desktop/dse/ds py/guests.csv")
 
 
-guest_list = [ds_guest.guest]
+guest_list = [[i] for i in ds_guest.guest]
 hotel_list = [[i] for i in ds_hotel.hotel]
 big_hotel_list = []
 
@@ -23,10 +23,27 @@ for x in hotel_list:
     count_rooms = 0
     i = i + 1
 
+#elimino uno strato della lista degli hotel
+second_big_hotel_list = []
+for item in big_hotel_list:
+    x = (' '.join(item))
+    second_big_hotel_list.append(x)
+
+#elimino uno strato della lista degli ospiti
+second_guest_list = []
+for item in guest_list:
+    x = (' '.join(item))
+    second_guest_list.append(x)
+
 # alcune stanze rimangono vuote
 len_check = len(big_hotel_list) == len(guest_list)
-print(len_check)
+ #print(len_check)
 
-#bisogna mischiare e assegnare
+#mischio le stanze, altrimenti non sarebbe random
+random.shuffle(second_big_hotel_list)
+
+#creo un dizionario con le allocazioni casuali
+random_allocation = dict(zip(second_guest_list, second_big_hotel_list))
+print(random_allocation)
 
 sys.exit()
