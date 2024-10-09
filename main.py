@@ -36,6 +36,12 @@ for y in rooms_list:
 hotel_rooms = dict(zip(second_hotel_list, number_rooms))
 print(hotel_rooms)
 
+#come scalare dal dizionario le stanze volta per volta???
+# metti un contatore pari a 1 e verifichi che sia uguale al valore della priority, quando la priority torna a 1
+# significa che è cambiato il guest, si crea così una lista di liste con le preferenze, dove 
+# ogni elemento della lista esterna è un guest e quelli di ogni lista interna sono gli hotel di quel guest in ordine
+# di priorità
+
 
     
 
