@@ -48,12 +48,14 @@ for x in second_guest_list:
     while x == ds_pref.guest[i]:
         inner.append(ds_pref.hotel[i])
         i += 1
+        if i == 99533:
+            break
     outer.append(inner)
-    i = 0
     inner = []
+    
 print(outer)
 
-#perchè funziona solo se resetto il contatore a zero e non se lo lascio libero???
-
+#trovare il modo per cambiare il value nel dizionario hotel_rooms ogni volta che si assegna una stanza
+#creare un dizionario con guest:hotel
 
 sys.exit()
