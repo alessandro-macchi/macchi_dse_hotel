@@ -1,4 +1,5 @@
-def list_cleaner(x, y):
-    for j in x:
+#x è la lista da pulire, y è la lista pulita
+def list_cleaner(lista_da_pulire, lista_pulita):
+    for j in lista_da_pulire:
         for i in j:
-            y.append(i)
+            lista_pulita.append(i)

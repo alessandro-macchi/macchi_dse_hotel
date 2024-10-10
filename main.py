@@ -1,4 +1,5 @@
 import sys
+import random
 import pandas as pd
 
 # importo i datasets
@@ -11,10 +12,10 @@ guest_list = [[i] for i in ds_guest.guest]
 hotel_list = [[i] for i in ds_hotel.hotel]
 
 #creo una funzione per trasformare una lista di liste in una lista singola
-def list_cleaner(x, y):
-    for j in x:
-        for i in j:
-            y.append(i)
+def list_cleaner(lista_da_pulire, lista_pulita):
+    for j in lista_da_pulire:
+        for item in j:
+            lista_pulita.append(item)
 
 second_guest_list = []
 list_cleaner(guest_list, second_guest_list)
@@ -27,35 +28,11 @@ n_rooms = pd.to_numeric(ds_hotel.rooms, errors = 'coerce')
 rooms_list = [[i] for i in n_rooms]
 number_rooms = []
 
+#pulisco la lista
 list_cleaner(rooms_list, number_rooms)
 
 #dizionario con hotel e numero di stanze per ciascuno
 hotel_rooms = dict(zip(second_hotel_list, number_rooms))
 
-
-
-# setto un'indice che scorre nella lista delle preferenze dei guest
-i = 0
-#una lista interna temporanea che si cancella di volta in volta
-inner = []
-#una lista esterna che raccoglie tutte le liste interne temporanee
-outer = []
-
-#scorro nella lista dei guest
-for x in second_guest_list:
-#finchè il guest della lista è uguale a quello del dataset delle preferenze, prendo l'hotel associato
-#e lo unisco alla lista interna
-    while x == ds_pref.guest[i]:
-        inner.append(ds_pref.hotel[i])
-        i += 1
-        if i == 99533:
-            break
-    outer.append(inner)
-    inner = []
-    
-print(outer)
-
-#trovare il modo per cambiare il value nel dizionario hotel_rooms ogni volta che si assegna una stanza
-#creare un dizionario con guest:hotel
 
 sys.exit()

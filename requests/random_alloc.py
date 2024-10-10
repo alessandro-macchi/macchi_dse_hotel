@@ -17,20 +17,20 @@ n_rooms = pd.to_numeric(ds_hotel.rooms, errors = 'coerce')
 
 #modifico la lista con gli hotel per fare in modo che gli hotel vengano ripetuti tante volte volte
 #quante sono le stanze dello stesso
-count_rooms = 0
+ROOMS_COUNT = 0
 i = 0
 for x in hotel_list:
-    while count_rooms < n_rooms[i]:
+    while ROOMS_COUNT < n_rooms[i]:
         big_hotel_list.append(x)
-        count_rooms = count_rooms + 1
-    count_rooms = 0
+        ROOMS_COUNT = ROOMS_COUNT + 1
+    ROOMS_COUNT = 0
     i = i + 1
 
 #creo una funzione per trasformare una lista di liste in una lista singola
-def list_cleaner(x, y):
-    for j in x:
-        for i in j:
-            y.append(i)
+def list_cleaner(lista_da_pulire, lista_pulita):
+    for j in lista_da_pulire:
+        for item in j:
+            lista_pulita.append(item)
 
 second_big_hotel_list = []
 list_cleaner(big_hotel_list, second_big_hotel_list)
