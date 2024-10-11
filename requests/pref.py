@@ -36,7 +36,7 @@ hotel_rooms = dict(zip(second_hotel_list, number_rooms))
 
 
 
-# setto un'indice che scorre nella lista delle preferenze dei guest
+# setto un'indice che scorre liberamente nella lista delle preferenze dei guest
 i = 0
 #una lista interna temporanea che si cancella di volta in volta
 inner = []
@@ -56,12 +56,20 @@ for x in second_guest_list:
     outer.append(inner)
     inner = []
 
-
+#creo un indice che scorre, un dizionario vuoto in cui inserire di volta in volta gli ospiti
+#sistemati, una lista per gli ospiti senza una stanza e associato agli ospiti un codice sequanziale
+#per distinguerli più chiaramente
 l2 = 0
 alloc_guest = {}
 unassigned_guest = []
-guest_number = 1
+guest_number = 0
 
+#scorro la lista per ogni guest (l1) con gli hotel in ordine di preferenza (l2), verifico che
+#l'hotel abbia ancora stanze disponibili, se così non fosse passa all'elemento successivo della
+#lista del guest. Se nessuna stanza è disponibile allora si genera un errore (index out of list)
+#che viene risolto con try/except e si ricomincia dal successivo. Il contatore (test) serve per
+#uscire dal while quando il guest viene sistemato e viene resettato ogni volta che si passa al guest
+#successivo
 for l1 in outer:
     test = 0
     guest_number += 1
