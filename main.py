@@ -31,91 +31,31 @@ number_rooms = []
 #pulisco la lista
 list_cleaner(rooms_list, number_rooms)
 
-#dizionario con hotel e numero di stanze per ciascuno
-hotel_rooms = dict(zip(second_hotel_list, number_rooms))
-
 #creo una lista pulita con il prezzo per hotel
 price_list = [[i] for i in ds_hotel.price]
 cleaned_price = []
 list_cleaner(price_list, cleaned_price)
 
-#creo lista con numero stanze e prezzo di ogni hotel
-price_rooms = []
-j = 0
-for i in cleaned_price:
-    price_rooms.append(i)
-    price_rooms.append(number_rooms[j])
-    j += 1
-
-#dizionario con hotel e prezzo associato
-hotel_price = dict(zip(second_hotel_list, cleaned_price))
-
-#riordino il dizionario
-ordered_hotel_price = {key: val for key, val in sorted(hotel_price.items(),
-                        key = lambda ele: ele[1])}
-
-
-# setto un'indice che scorre liberamente nella lista delle preferenze dei guest
-i = 0
-#una lista interna temporanea che si cancella di volta in volta
-inner = []
-#una lista esterna che raccoglie tutte le liste interne temporanee
-outer = []
-
-#scorro nella lista dei guest
-for x in second_guest_list:
-#finchè il guest della lista è uguale a quello del dataset delle preferenze, prendo l'hotel 
-#associato e lo unisco alla lista interna
-    try:
-        while x == ds_pref.guest[i]:
-            inner.append(ds_pref.hotel[i])
-            i += 1
-    except:
-        break
-    outer.append(inner)
-    inner = []
-
-#creo un dizionario con gli hotel in ordine di prezzo, ma associati al valore delle stanze
-y = 0
-ordered_hotel_list = []
-for j in ordered_hotel_price: 
-    ordered_hotel_list.append(list(ordered_hotel_price.items())[y][0])
-    y += 1
-
-#setto gli indici
+#provare a creare un dizionario con tutte le info per ogni hotel e prenderle quando necessario
+#(tipo per scalare il numero di stanze di volta in volta)
+#cambiare ordine!!
+Hotel = {}
+temp = {}
+prova = 1
 w = 0
-q = 0
-risultato = {}
-unassigned_guest = []
-guest_number = 0
-
-#continua all'infinito, bisogna occupare tutte le stanze dell'hotel
-for item in ordered_hotel_list:
-    guest_number += 1
-    q = 0
-    test = 0
-    while hotel_rooms.get(item) > 0:
-        try:
-            if item == outer[w][q]:
-                risultato[guest_number] = outer[w][q]
-                hotel_rooms[outer[w][q]] -= 1
-                w += 1
-                test = 1
-            else:
-                q += 1
-        except:
-            unassigned_guest.append(guest_number)
-            test = 1
-            w += 1
-            
-print(unassigned_guest)
-
-            
+for i in second_hotel_list, number_rooms, cleaned_price:
+    temp['name'] = second_hotel_list[w]
+    temp['rooms'] = number_rooms[w]
+    temp['price'] = cleaned_price[w]
+    Hotel[prova] = temp
+    prova += 1
+    w += 1
+    temp = {}
     
-#crei un dizionario con values il numero di stanze e il prezzo e riordini per il secondo 
-#se non si può fare si crea un dizionario con i prezzi, si riordina secondo questi e poi
-#sostituisci il prezzo con il numero di stanze (occhio che cambia l'ordine degli hotel), ma nel
-#caso si potrebbe risolvere con due dizionari che vengono fatti comunicare
-
+    
+Hotel['name'] = second_hotel_list
+Hotel['rooms'] = number_rooms
+Hotel['price'] = cleaned_price
+print(Hotel)
 
 sys.exit()
