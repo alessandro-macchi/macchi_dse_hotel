@@ -84,38 +84,44 @@ for j in ordered_hotel_price:
     y += 1
 
 #setto gli indici
-w = 0
-q = 0
 risultato = {}
 unassigned_hotel = []
 
 #continua all'infinito, bisogna occupare tutte le stanze dell'hotel
 for item in ordered_hotel_list:
-    guest_number = 1
+    guest_number = 0
+    for i in pref_list:
+        guest_number += 1
+        for j in i:
+            if guest_number not in risultato.keys():
+                if not hotel_rooms[item] == 0:
+                    if item == j:
+                        risultato[guest_number] = item
+                        hotel_rooms[item] -= 1
+
+#stampando la variabile risultato si trovano le persone con gli hotel associati
+
+#lista degli hotel non assegnati
+for t in ordered_hotel_list:
+    if hotel_rooms[t] > 0:
+        unassigned_hotel.append(t)
+
+
+#numero stanze non assegnate
+fin = 0
+for y in unassigned_hotel:
+    z = hotel_rooms[y]
+    fin += z
     
-    q = 0
-    test = 0
-    while test == 0:
-        try:
-            if item == pref_list[w][q]:
-                risultato[item] = guest_number
-                hotel_rooms[item] -= 1
-                w += 1
-                guest_number += 1
-                if hotel_rooms[item] == 0:
-                    test = 1
-            else:
-                q += 1
-        except:
-            w += 1
-            guest_number += 1
+#notiamo che il numero di stanze che eccedono i guests (617) e il numero di guests non assegnati (75)
+#coincide con il numero di stanze avanzate in questa situazione (692)
 
-print(risultato)
+#questo ciclo for va messo prima che le hotel_rooms vengano scalate per assegnarle
+tot = 0
+for i in hotel_rooms:
+    a = hotel_rooms[i]
+    tot += a
 
-#crei un dizionario con values il numero di stanze e il prezzo e riordini per il secondo 
-#se non si può fare si crea un dizionario con i prezzi, si riordina secondo questi e poi
-#sostituisci il prezzo con il numero di stanze (occhio che cambia l'ordine degli hotel), ma nel
-#caso si potrebbe risolvere con due dizionari che vengono fatti comunicare
-
+verifica = (len(second_guest_list) - len(risultato)) + (tot - len(second_guest_list))
 
 sys.exit()
