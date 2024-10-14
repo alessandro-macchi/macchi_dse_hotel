@@ -1,4 +1,3 @@
-#prima idea
 import sys
 import random
 import pandas as pd
