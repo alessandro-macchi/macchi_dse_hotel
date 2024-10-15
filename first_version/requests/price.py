@@ -39,14 +39,6 @@ price_list = [[i] for i in ds_hotel.price]
 cleaned_price = []
 list_cleaner(price_list, cleaned_price)
 
-#creo lista con numero stanze e prezzo di ogni hotel
-price_rooms = []
-j = 0
-for i in cleaned_price:
-    price_rooms.append(i)
-    price_rooms.append(number_rooms[j])
-    j += 1
-
 #dizionario con hotel e prezzo associato
 hotel_price = dict(zip(second_hotel_list, cleaned_price))
 
@@ -86,7 +78,7 @@ for j in ordered_hotel_price:
 risultato = {}
 unassigned_hotel = []
 
-#continua all'infinito, bisogna occupare tutte le stanze dell'hotel
+#dizionario con gli ospiti allocati
 for item in ordered_hotel_list:
     guest_number = 0
     for i in pref_list:

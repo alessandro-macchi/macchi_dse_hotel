@@ -39,9 +39,9 @@ hotel_rooms = dict(zip(second_hotel_list, number_rooms))
 # setto un'indice che scorre liberamente nella lista delle preferenze dei guest
 i = 0
 #una lista interna temporanea che si cancella di volta in volta
-inner = []
+temporary_list = []
 #una lista esterna che raccoglie tutte le liste interne temporanee
-outer = []
+pref_list = []
 
 #scorro nella lista dei guest
 for x in second_guest_list:
@@ -49,45 +49,45 @@ for x in second_guest_list:
 #associato e lo unisco alla lista interna
     try:
         while x == ds_pref.guest[i]:
-            inner.append(ds_pref.hotel[i])
+            temporary_list.append(ds_pref.hotel[i])
             i += 1
     except:
         break
-    outer.append(inner)
-    inner = []
+    pref_list.append(temporary_list)
+    temporary_list = []
 
 #creo un indice che scorre, un dizionario vuoto in cui inserire di volta in volta gli ospiti
 #sistemati, una lista per gli ospiti senza una stanza e associato agli ospiti un codice sequanziale
 #per distinguerli più chiaramente
-l2 = 0
-alloc_guest = {}
+layer_2 = 0
+alloc_pref = {}
 unassigned_guest = []
 guest_number = 0
 
-#scorro la lista per ogni guest (l1) con gli hotel in ordine di preferenza (l2), verifico che
+#scorro la lista per ogni guest (layer_1) con gli hotel in ordine di preferenza (layer_2), verifico che
 #l'hotel abbia ancora stanze disponibili, se così non fosse passa all'elemento successivo della
 #lista del guest. Se nessuna stanza è disponibile allora si genera un errore (index out of list)
 #che viene risolto con try/except e si ricomincia dal successivo. Il contatore (test) serve per
 #uscire dal while quando il guest viene sistemato e viene resettato ogni volta che si passa al guest
 #successivo
-for l1 in outer:
+for layer_1 in pref_list:
     test = 0
     guest_number += 1
-    l2 = 0
+    layer_2 = 0
     while test == 0:
         try:
-            if hotel_rooms.get(l1[l2]) > 0:
-                alloc_guest[guest_number] = l1[l2]
-                hotel_rooms[l1[l2]] -= 1
+            if hotel_rooms.get(layer_1[layer_2]) > 0:
+                alloc_pref[guest_number] = layer_1[layer_2]
+                hotel_rooms[layer_1[layer_2]] -= 1
                 test = 1
             else:
-                l2 += 1
+                layer_2 += 1
         except:
             unassigned_guest.append(guest_number)
             test = 1
 
 #gli ospiti, in ordine di preferenza, vengono allocati in queste stanze
-print(alloc_guest)
+print(alloc_pref)
 #le seguenti stanze sono rimaste vuote
 print(hotel_rooms)
 #i seguenti ospiti sono rimasti senza una stanza
