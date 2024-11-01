@@ -51,7 +51,8 @@ for guest in guests_df['name']:
             hotel_df.loc[chosen_hotel, 'n_rooms'] -= 1
             assigned_hotel = chosen_hotel
 
-print(assignment)
+print(len(assignment)) #all guests have been allocated
+
 
 
 sys.exit()
