@@ -92,6 +92,8 @@ for item in ordered_hotel_list:
 
 #stampando la variabile risultato si trovano le persone con gli hotel associati
 
+print(risultato)
+
 #lista degli hotel non assegnati
 for t in ordered_hotel_list:
     if hotel_rooms[t] > 0:
