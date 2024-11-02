@@ -1,12 +1,12 @@
 import sys
 import pandas as pd
 
-# importo i datasets
+# importing datasets
 ds_hotel = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/Python project/Datasets/hotels.csv")
 ds_pref = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/Python project/Datasets/preferences.csv")
 ds_guest = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/Python project/Datasets/guests.csv")
 
-# creo un dizionario per ogni dataset
+# create a dictionary for every dataset
 hotel = {
     'name': ds_hotel.hotel,
     'price': ds_hotel.price,
@@ -17,7 +17,7 @@ guests = {
     'discount': pd.to_numeric(ds_guest.discount, errors = 'coerce')
 }
 
-#creo una lista degli hotel in ordine di preferenza per ogni cliente
+# create a list of the hotels in order of preference for every guest
 pref_list = []
 i = 0
 for guest in guests['name']:
@@ -51,13 +51,12 @@ for guest in guests_df['name']:
             hotel_df.loc[chosen_hotel, 'n_rooms'] -= 1
             break
 
-print("Guest assignments:", len(assignment)) #not all guests have been allocated
+print("Guest assigned:", len(assignment)) #not all guests have been allocated
 
 allocated_guests = set(assignment.keys())
 all_guests = set(guests_df['name'])
-
 unassigned_guests = all_guests - allocated_guests
-print(unassigned_guests) #these are the unassigned guests
+print("Guest not assigned:", len(unassigned_guests)) #these are the unassigned guests
 
 print("\nRemaining rooms in hotels:")
 print(hotel_df.drop(columns = 'price')) #these are the unassigned rooms per hotel

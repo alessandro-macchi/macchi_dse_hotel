@@ -1,0 +1,3 @@
+considera che il ds dato ha nomi per hotel e guest unici, inoltre sei sicuro che i guest abbiano 
+espresso preferenze su hotel che sono certamente nel ds. Per considerare questi fattori sarebbero
+necessarie delle implementazioni nel codice, che tuttavia lo rallenterebbero, perciò sono state escluse.

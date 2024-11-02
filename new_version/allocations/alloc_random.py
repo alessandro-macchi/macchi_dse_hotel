@@ -2,12 +2,12 @@ import sys
 import random
 import pandas as pd
 
-# importo i datasets
+# importing datasets
 ds_hotel = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/Python project/Datasets/hotels.csv")
 ds_pref = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/Python project/Datasets/preferences.csv")
 ds_guest = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/Python project/Datasets/guests.csv")
 
-# creo un dizionario per ogni dataset
+# create a dictionary for every dataset
 hotel = {
     'name': ds_hotel.hotel,
     'price': ds_hotel.price,
@@ -18,7 +18,7 @@ guests = {
     'discount': pd.to_numeric(ds_guest.discount, errors = 'coerce')
 }
 
-#creo una lista degli hotel in ordine di preferenza per ogni cliente
+# create a list of the hotels in order of preference for every guest
 pref_list = []
 i = 0
 for guest in guests['name']:
@@ -39,6 +39,7 @@ guests_df = pd.DataFrame(guests)
 preferences_df = pd.DataFrame(preferences)
 
 hotel_df.set_index('name', inplace=True)
+random.seed(6) #i want the same random result every time to analyze it
 assignment = {}
 
 for guest in guests_df['name']:
@@ -51,8 +52,9 @@ for guest in guests_df['name']:
             hotel_df.loc[chosen_hotel, 'n_rooms'] -= 1
             assigned_hotel = chosen_hotel
 
-print(len(assignment)) #all guests have been allocated
+print("Guest assigned:", len(assignment)) #all guests have been allocated
 
-
+print("\nRemaining rooms in hotels:")
+print(hotel_df.drop(columns = 'price')) #these are the unassigned rooms per hotel
 
 sys.exit()
