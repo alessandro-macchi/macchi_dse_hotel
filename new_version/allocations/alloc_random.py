@@ -1,6 +1,7 @@
 import sys
 import random
 import pandas as pd
+from tabulate import tabulate
 
 # importing datasets
 ds_hotel = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/Python project/Datasets/hotels.csv")
@@ -54,7 +55,12 @@ for guest in guests_df['name']:
 
 print("Guest assigned:", len(assignment)) #all guests have been allocated
 
-print("\nRemaining rooms in hotels:")
-print(hotel_df.drop(columns = 'price')) #these are the unassigned rooms per hotel
+#the number of rooms occupied is equal to the number of guests accomodated
 
+remaining_rooms = hotel_df['n_rooms'].sum()
+print("Guest assigned:", len(assignment), "\nRemaining rooms:", remaining_rooms)
+
+#attempt for prettier display:
+headers = ['Hotel', 'Remaining rooms']
+#print(tabulate(hotel_df.drop(columns = 'price'), headers=headers, tablefmt="grid"))
 sys.exit()
