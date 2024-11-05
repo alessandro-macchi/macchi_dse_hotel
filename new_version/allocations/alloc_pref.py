@@ -2,19 +2,27 @@ import sys
 import pandas as pd
 
 # importing datasets
-ds_hotel = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/Python project/Datasets/hotels.csv")
-ds_pref = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/Python project/Datasets/preferences.csv")
-ds_guest = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/Python project/Datasets/guests.csv")
+ds_hotel = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/python_project/Datasets/hotels.csv")
+ds_pref = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/python_project/Datasets/preferences.csv")
+ds_guest = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/python_project/Datasets/guests.csv")
 
 # create a dictionary for every dataset
 hotel = {
     'name': ds_hotel.hotel,
     'price': ds_hotel.price,
-    'n_rooms': pd.to_numeric(ds_hotel.rooms, errors = 'coerce')
+    'initial_rooms': pd.to_numeric(ds_hotel.rooms, errors = 'coerce'),
+    'final_rooms': pd.to_numeric(ds_hotel.rooms, errors = 'coerce')
 }
 guests = {
     'name': ds_guest.guest,
-    'discount': pd.to_numeric(ds_guest.discount, errors = 'coerce')
+    'discount': pd.to_numeric(ds_guest.discount, errors = 'coerce'),
+    'preferences': ""
+}
+priority = {
+    'name': ds_pref.guest,
+    'hotel': ds_pref.hotel,
+    'number': ds_pref.priority
+    
 }
 
 # create a list of the hotels in order of preference for every guest
@@ -28,16 +36,14 @@ for guest in guests['name']:
         i += 1
     pref_list.append(temporary_list)
 
-preferences = {
-    'guest': guests['name'],
-    'hotel': pref_list
-}
-
 hotel_df = pd.DataFrame(hotel)
 guests_df = pd.DataFrame(guests)
-preferences_df = pd.DataFrame(preferences)
+priority_df = pd.DataFrame(priority)
 
-hotel_df.set_index('name', inplace=True)
+guests_df['preferences'] = pref_list
+
+hotel_df.set_index('name', inplace = True)
+guests_df.set_index('name', inplace = True)
 assignment = {}
 
 for guest in guests_df['name']:
