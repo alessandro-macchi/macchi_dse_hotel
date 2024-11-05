@@ -34,18 +34,18 @@ def importing():
 
 def df_creation(ds_hotel, ds_pref, ds_guests):  # Make sure these parameters are here
     # Create dictionaries for each dataset
-    a = {
+    hotel = {
         'name': ds_hotel['hotel'],
         'price': ds_hotel['price'],
         'initial_rooms': pd.to_numeric(ds_hotel['rooms'], errors='coerce'),
         'final_rooms': pd.to_numeric(ds_hotel['rooms'], errors='coerce')
     }
-    b = {
+    guests = {
         'name': ds_guests['guest'],
         'discount': pd.to_numeric(ds_guests['discount'], errors='coerce'),
         'preferences': ""
     }
-    c = {
+    preferences = {
         'name': ds_pref['guest'],
         'hotel': ds_pref['hotel'],
         'number': ds_pref['priority']
@@ -54,7 +54,7 @@ def df_creation(ds_hotel, ds_pref, ds_guests):  # Make sure these parameters are
     # Create list of preferred hotels for each guest
     pref_list = []
     i = 0
-    for guest in b['name']:
+    for guest in guests['name']:
         temporary_list = []
         while i < len(ds_pref) and ds_pref['guest'][i] == guest:
             temporary_list.append(ds_pref['hotel'][i])
@@ -62,14 +62,27 @@ def df_creation(ds_hotel, ds_pref, ds_guests):  # Make sure these parameters are
         pref_list.append(temporary_list)
     
     # Create DataFrames from dictionaries
-    hotel_df = pd.DataFrame(a)
-    guests_df = pd.DataFrame(b)
-    priority_df = pd.DataFrame(c)
+    hotel_df = pd.DataFrame(hotel)
+    guests_df = pd.DataFrame(guests)
+    priority_df = pd.DataFrame(preferences)
     
     # Add preferences to guests_df
     guests_df['preferences'] = pref_list
     
     return hotel_df, guests_df, priority_df
+
+def hotel_wise_allocation(hotel_df, guests_df, assignment):
+    for hotel_name, row in hotel_df.iterrows():
+        # create a vector with the guests that have the hotel_name in their preferences
+        guests_vector = guests_df[guests_df['preferences'].apply(lambda x: hotel_name in x)].index
+        for guest_name in guests_vector:
+            if row['final_rooms'] > 0 and guest_name not in assignment:
+                assignment[guest_name] = hotel_name
+                hotel_df.loc[hotel_name, 'final_rooms'] -= 1
+            # stop the iteration on the guests when there are no more rooms available
+            if hotel_df.loc[hotel_name, 'final_rooms'] <= 0:
+                break
+    return assignment
 
 def number_of_customers_accommodated(assignment):
     assigned_guests = len(assignment)
@@ -142,16 +155,3 @@ def customer_satisfaction(guests_df, assignment):
 
     average_satisfaction = total_satisfaction / len(guests_df)
     return average_satisfaction
-
-def hotel_wise_allocation(hotel_df, guests_df, assignment):
-    for hotel_name, row in hotel_df.iterrows():
-        # create a vector with the guests that have the hotel_name in their preferences
-        guests_vector = guests_df[guests_df['preferences'].apply(lambda x: hotel_name in x)].index
-        for guest_name in guests_vector:
-            if row['final_rooms'] > 0 and guest_name not in assignment:
-                assignment[guest_name] = hotel_name
-                hotel_df.loc[hotel_name, 'final_rooms'] -= 1
-            # stop the iteration on the guests when there are no more rooms available
-            if hotel_df.loc[hotel_name, 'final_rooms'] <= 0:
-                break
-    return assignment
