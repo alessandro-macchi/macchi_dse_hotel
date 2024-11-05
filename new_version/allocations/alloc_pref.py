@@ -1,70 +1,36 @@
-import sys
-import pandas as pd
+import my_modules
 
-# importing datasets
-ds_hotel = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/python_project/Datasets/hotels.csv")
-ds_pref = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/python_project/Datasets/preferences.csv")
-ds_guest = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/python_project/Datasets/guests.csv")
-
-# create a dictionary for every dataset
-hotel = {
-    'name': ds_hotel.hotel,
-    'price': ds_hotel.price,
-    'initial_rooms': pd.to_numeric(ds_hotel.rooms, errors = 'coerce'),
-    'final_rooms': pd.to_numeric(ds_hotel.rooms, errors = 'coerce')
-}
-guests = {
-    'name': ds_guest.guest,
-    'discount': pd.to_numeric(ds_guest.discount, errors = 'coerce'),
-    'preferences': ""
-}
-priority = {
-    'name': ds_pref.guest,
-    'hotel': ds_pref.hotel,
-    'number': ds_pref.priority
-    
-}
-
-# create a list of the hotels in order of preference for every guest
-pref_list = []
-i = 0
-for guest in guests['name']:
-    temporary_list = []
-    # iterate until we find hotels for the current guest
-    while i < len(ds_pref) and ds_pref.guest[i] == guest:
-        temporary_list.append(ds_pref.hotel[i])
-        i += 1
-    pref_list.append(temporary_list)
-
-hotel_df = pd.DataFrame(hotel)
-guests_df = pd.DataFrame(guests)
-priority_df = pd.DataFrame(priority)
-
-guests_df['preferences'] = pref_list
+ds_hotel, ds_pref, ds_guests = my_modules.importing()
+hotel_df, guests_df, priority_df = my_modules.df_creation(ds_hotel, ds_pref, ds_guests)
 
 hotel_df.set_index('name', inplace = True)
 guests_df.set_index('name', inplace = True)
-assignment = {}
+assignment_preferences = {}
 
-for guest in guests_df['name']:
+for guest in guests_df.index:
     # get the list of preferred hotels for the current guest
-    preferences = preferences_df.loc[preferences_df['guest'] == guest, 'hotel'].values[0]
+    preferences = guests_df.loc[guests_df.index == guest, 'preferences'].values[0]
     # try to allocate the guest based on his preferences
     for chosen_hotel in preferences:
         row = hotel_df.loc[chosen_hotel]
-        if row['n_rooms'] > 0:
-            assignment[guest] = chosen_hotel
-            hotel_df.loc[chosen_hotel, 'n_rooms'] -= 1
+        if row['final_rooms'] > 0:
+            assignment_preferences[guest] = chosen_hotel
+            hotel_df.loc[chosen_hotel, 'final_rooms'] -= 1
             break
 
-print("Guest assigned:", len(assignment)) #not all guests have been allocated
+#number of customers accommodated
+assigned_guests_preferences = my_modules.number_of_customers_accommodated(assignment_preferences)
 
-allocated_guests = set(assignment.keys())
-all_guests = set(guests_df['name'])
-unassigned_guests = all_guests - allocated_guests
-print("Guest not assigned:", len(unassigned_guests)) #these are the unassigned guests
+#the number of rooms occupied
+occupied_rooms_preferences = my_modules.number_of_rooms_occupied(hotel_df)
 
-print("\nRemaining rooms in hotels:")
-print(hotel_df.drop(columns = 'price')) #these are the unassigned rooms per hotel
+#the number of different hotels occupied
+full_hotels_preferences = my_modules.number_of_different_hotels_occupied(hotel_df)
 
-sys.exit()
+#the total volume of business (total earnings of each hotel)
+total_revenue_preferences = my_modules.total_volume_of_business1(assignment_preferences, guests_df, hotel_df)
+
+# the degree of customer satisfaction 
+average_satisfaction_preferences = my_modules.customer_satisfaction(guests_df, assignment_preferences)
+
+#Grafici
