@@ -1,39 +1,13 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-def plot_hotel_revenue(assignment, guests_df, hotel_df):
-    # Calculate revenue for each hotel based on assigned guests
-    hotel_revenue = {}
-    for guest, hotel in assignment.items():
-        discount = guests_df.loc[guest, 'discount']
-        price = hotel_df.loc[hotel, 'price']
-        revenue = price * (1 - discount)
-        hotel_revenue[hotel] = hotel_revenue.get(hotel, 0) + revenue
-    
-    # Plotting
-    hotels = list(hotel_revenue.keys())
-    revenues = list(hotel_revenue.values())
-    
-    plt.figure(figsize=(10, 6))
-    plt.bar(hotels, revenues, color='skyblue')
-    plt.xlabel('Hotels')
-    plt.ylabel('Revenue')
-    plt.title('Revenue by Hotel')
-    plt.xticks(rotation=45)
-    plt.tight_layout()
 
 def importing():
-    # Import datasets
     ds_hotel = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/python_project/Datasets/hotels.csv")
     ds_pref = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/python_project/Datasets/preferences.csv")
     ds_guests = pd.read_csv("C:/Users/Utente/Desktop/dse/1t/python_project/Datasets/guests.csv")
     return ds_hotel, ds_pref, ds_guests
 
-def df_creation(ds_hotel, ds_pref, ds_guests):  # Make sure these parameters are here
-    # Create dictionaries for each dataset
+def df_creation(ds_hotel, ds_pref, ds_guests):
     hotel = {
         'name': ds_hotel['hotel'],
         'price': ds_hotel['price'],
@@ -61,12 +35,10 @@ def df_creation(ds_hotel, ds_pref, ds_guests):  # Make sure these parameters are
             i += 1
         pref_list.append(temporary_list)
     
-    # Create DataFrames from dictionaries
     hotel_df = pd.DataFrame(hotel)
     guests_df = pd.DataFrame(guests)
     priority_df = pd.DataFrame(preferences)
     
-    # Add preferences to guests_df
     guests_df['preferences'] = pref_list
     
     return hotel_df, guests_df, priority_df
@@ -101,13 +73,20 @@ def number_of_different_hotels_occupied(hotel_df):
             full_hotels += 1
     return full_hotels
 
-def total_volume_of_business1(assignment, guests_df, hotel_df):
-    total_revenue = 0
+def hotel_earnings(assignment, guests_df, hotel_df):
+    hotel_revenue = {}
     for guest, hotel in assignment.items():
         guest_discount = guests_df.loc[guest, 'discount']
         hotel_price = hotel_df.loc[hotel, 'price']
         guest_price = hotel_price - (hotel_price * guest_discount)
-        total_revenue += guest_price
+        if hotel in hotel_revenue:
+            hotel_revenue[hotel] += guest_price
+        else:
+            hotel_revenue[hotel] = guest_price
+    return hotel_revenue
+
+def total_volume_of_business1(hotel_revenue):
+    total_revenue = sum(hotel_revenue.values())
     return total_revenue
 
 #second method (NumPy)
@@ -155,3 +134,4 @@ def customer_satisfaction(guests_df, assignment):
 
     average_satisfaction = total_satisfaction / len(guests_df)
     return average_satisfaction
+

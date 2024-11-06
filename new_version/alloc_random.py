@@ -34,7 +34,3 @@ total_revenue_random = my_modules.total_volume_of_business1(assignment_random, g
 #the degree of customer satisfaction
 # RANDOM CASE HAS A SPECIFIC FUNCTION
 average_satisfaction_random = my_modules.customer_satisfaction_random(guests_df, assignment_random)
-
-
-# Grafici
-my_modules.plot_hotel_revenue(assignment_random, guests_df, hotel_df)
