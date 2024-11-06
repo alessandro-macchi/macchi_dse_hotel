@@ -29,7 +29,8 @@ occupied_rooms_random = my_modules.number_of_rooms_occupied(hotel_df)
 full_hotels_random = my_modules.number_of_different_hotels_occupied(hotel_df)
 
 #the total volume of business (total earnings of each hotel)
-total_revenue_random = my_modules.total_volume_of_business1(assignment_random, guests_df, hotel_df)
+hotel_revenue_random = my_modules.hotel_earnings(assignment_random, guests_df, hotel_df)
+total_revenue_random = my_modules.total_volume_of_business1(hotel_revenue_random)
 
 #the degree of customer satisfaction
 # RANDOM CASE HAS A SPECIFIC FUNCTION

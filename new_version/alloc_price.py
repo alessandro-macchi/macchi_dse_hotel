@@ -21,7 +21,8 @@ occupied_rooms_price = my_modules.number_of_rooms_occupied(hotel_df)
 full_hotels_price = my_modules.number_of_different_hotels_occupied(hotel_df)
 
 #the total volume of business (total earnings of each hotel)
-total_revenue_price = my_modules.total_volume_of_business1(assignment_price, guests_df, hotel_df)
+hotel_revenue_price = my_modules.hotel_earnings(assignment_price, guests_df, hotel_df)
+total_revenue_price = my_modules.total_volume_of_business1(hotel_revenue_price)
 
 # the degree of customer satisfaction 
 average_satisfaction_price = my_modules.customer_satisfaction(guests_df, assignment_price)

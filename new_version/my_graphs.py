@@ -23,8 +23,6 @@ def customer_satisfaction_by_strategy(average_satisfaction_random, average_satis
     plt.ylim(0, 1)
     plt.show()
     
-import matplotlib.pyplot as plt
-
 def plot_hotel_revenue(assignment, guests_df, hotel_df):
     # Calculate revenue for each hotel based on assigned guests
     hotel_revenue = {}
@@ -43,7 +41,7 @@ def plot_hotel_revenue(assignment, guests_df, hotel_df):
     plt.xlabel('Hotels')
     plt.ylabel('Revenue')
     plt.title('Revenue by Hotel')
-    plt.xticks(rotation=45)
+    plt.xticks([])
     plt.tight_layout()
     plt.show()
 
