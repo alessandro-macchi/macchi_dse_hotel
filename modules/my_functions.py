@@ -4,34 +4,31 @@ import numpy as np
 
 def import_datasets(base_path = "C:/Users/Utente/Desktop/dse/1t/python_project/Datasets/"):
     base_path = Path(base_path)
-    ds_hotel = pd.read_csv(base_path / "hotels.csv")
-    ds_pref = pd.read_csv(base_path / "preferences.csv")
-    ds_guests = pd.read_csv(base_path / "guests.csv")
     
-    return ds_hotel, ds_pref, ds_guests
+    hotel_df = pd.read_csv(base_path / "hotels.csv")
+    guests_df = pd.read_csv(base_path / "guests.csv")
+    priority_df = pd.read_csv(base_path / "preferences.csv")
+    
+    return hotel_df, guests_df, priority_df 
 
-def create_dataframes(ds_hotel, ds_pref, ds_guests):
-    hotel_df = pd.DataFrame({
-        'name': ds_hotel['hotel'],
-        'price': ds_hotel['price'],
-        'initial_rooms': pd.to_numeric(ds_hotel['rooms'], errors='coerce'),
-        'final_rooms': pd.to_numeric(ds_hotel['rooms'], errors='coerce')
-    })
-    guests_df = pd.DataFrame({
-        'name': ds_guests['guest'],
-        'discount': pd.to_numeric(ds_guests['discount'], errors='coerce'),
-        'preferences': [None] * len(ds_guests)
-    })
-    priority_df = pd.DataFrame({
-        'name': ds_pref['guest'],
-        'hotel': ds_pref['hotel'],
-        'number': ds_pref['priority']
-    })
+def create_dataframes(hotel_df, guests_df, priority_df):
+    hotel_df = hotel_df.rename(columns = {'hotel': 'name'})
+    hotel_df = hotel_df.rename(columns = {'rooms': 'initial_rooms'})
+    hotel_df['final_rooms'] = hotel_df['initial_rooms']
+
+    guests_df = guests_df.rename(columns={'guest': 'name'})
+    guests_df['preferences'] = None 
     
-    preferences = {}
-    for x, row in ds_pref.iterrows():
-        preferences.setdefault(row['guest'], []).append(row['hotel'])
-    guests_df['preferences'] = guests_df['name'].map(preferences)
+    list_of_preferences = []
+    i = 0
+    for guest in guests_df['name']:
+        temporary_list = []
+        while i < len(priority_df) and priority_df['guest'][i] == guest:
+            temporary_list.append(priority_df['hotel'][i])
+            i += 1
+        list_of_preferences.append(temporary_list)
+    
+    guests_df['preferences'] = list_of_preferences
     
     return hotel_df, guests_df, priority_df
 
@@ -135,4 +132,3 @@ def customer_satisfaction(guests_df, assignment):
     average_satisfaction = total_satisfaction / len(guests_df)
     
     return average_satisfaction
-

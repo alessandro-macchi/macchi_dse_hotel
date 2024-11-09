@@ -3,8 +3,8 @@ sys.path.append('C:/Users/Utente/Desktop/dse/1t/python_project/macchi_dse_hotel'
 from modules.my_functions import *
 import random
 
-ds_hotel, ds_pref, ds_guests = import_datasets()
-hotel_df, guests_df, priority_df = create_dataframes(ds_hotel, ds_pref, ds_guests)
+hotel_df, guests_df, priority_df = import_datasets()
+hotel_df, guests_df, priority_df = create_dataframes(hotel_df, guests_df, priority_df)
 
 hotel_df.set_index('name', inplace = True)
 guests_df.set_index('name', inplace = True)
