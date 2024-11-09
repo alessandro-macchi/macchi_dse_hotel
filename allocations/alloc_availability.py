@@ -2,8 +2,8 @@ import sys
 sys.path.append('C:/Users/Utente/Desktop/dse/1t/python_project/macchi_dse_hotel')
 from modules.my_functions import *
 
-ds_hotel, ds_pref, ds_guests = importing()
-hotel_df, guests_df, priority_df = df_creation(ds_hotel, ds_pref, ds_guests)
+ds_hotel, ds_pref, ds_guests = import_datasets()
+hotel_df, guests_df, priority_df = create_dataframes(ds_hotel, ds_pref, ds_guests)
 
 #analogue to alloc_price, it just changes the sorting
 hotel_df.sort_values(by = 'initial_rooms', ascending = False, inplace = True)
