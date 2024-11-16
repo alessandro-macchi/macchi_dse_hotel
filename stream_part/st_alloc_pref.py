@@ -1,7 +1,7 @@
 import sys
 sys.path.append('C:/Users/Utente/Desktop/dse/1t/python_project/macchi_dse_hotel')
 from modules.my_functions import *
-from modules.my_graph_st import *
+from stream_part.my_graph_st import *
 
 def allocate_preferences(guests_df, hotel_df):
 

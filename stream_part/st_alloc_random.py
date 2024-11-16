@@ -20,8 +20,6 @@ def allocate_random(guests_df, hotel_df):
                 hotel_df.loc[chosen_hotel, 'final_rooms'] -= 1
                 assigned_hotel = chosen_hotel
 
-    print(assignment_random)
-
     #number of customers accommodated
     assigned_guests_random = number_of_customers_accommodated(assignment_random)
 
