@@ -2,8 +2,8 @@ import sys
 import streamlit as st
 import pandas as pd
 from modules.my_functions import *
-from stream_part.my_graph_st import *
-from stream_part.all_allocations import *
+from stream_section.my_graph_st import *
+from stream_section.all_allocations import *
 
 sys.path.append('C:/Users/Utente/Desktop/dse/1t/python_project/macchi_dse_hotel')
 

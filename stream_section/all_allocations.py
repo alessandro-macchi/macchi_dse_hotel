@@ -1,7 +1,7 @@
 import sys
 sys.path.append('C:/Users/Utente/Desktop/dse/1t/python_project/macchi_dse_hotel')
 from modules.my_functions import *
-from stream_part.my_graph_st import *
+from stream_section.my_graph_st import *
 import random
 
 def allocate_random(guests_df, hotel_df):
